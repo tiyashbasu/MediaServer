@@ -25,12 +25,12 @@ function showImage(imageObj) {
 
 function showFirstImageMessage() {
     document.getElementById("firstImageBox").style.display = "block";
-    $("#firstImageBox").fadeOut(2000);
+    $("#firstImageBox").delay(500).fadeOut(2000);
 }
 
 function showLastImageMessage() {
     document.getElementById("lastImageBox").style.display = "block";
-    $("#lastImageBox").fadeOut(2000);
+    $("#lastImageBox").delay(500).fadeOut(2000);
 }
 
 $('body').on('contextmenu', 'img', (e) => {
