@@ -1,0 +1,76 @@
+.paneImage {    
+    position: absolute;
+    top: 0%;
+    z-index: 1;
+
+    height: 100%;
+    width: 100%;
+
+    text-align: center;
+    
+    background: rgb(0, 0, 0);
+}
+
+.imgMainImage {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    max-height: 100%;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+
+    margin: auto;
+}
+
+.arrowContainer {
+    position: absolute;
+    top: 0%;
+    height: 100%;
+    width: auto;
+    z-index: 2;
+
+    opacity: 0;
+    -moz-transition: all 0.3s ease-in-out;  /* FF4+ */
+    -o-transition: all 0.3s ease-in-out;  /* Opera 10.5+ */
+    -webkit-transition: all 0.3s ease-in-out;  /* Saf3.2+, Chrome */
+    -ms-transition: all 0.3s ease-in-out;  /* IE10? */
+    transition: all 0.3s ease-in-out; 
+}
+
+.arrowContainer:hover {
+    opacity: 0.7;
+}
+
+.arrowLeftContainer {
+    left: 0px;
+}
+
+.arrowRightContainer {
+    right: 0px;
+}
+
+.emptySpace {
+    height: 50%;
+}
+
+.buttonArrow {
+    border: 1px solid rgb(40, 40, 40);
+    border-radius: 25%;
+
+    transform: translate(0, -50%);
+
+    margin: 0 10 0 10;
+    width: 50px;
+    height: 50px;
+
+    padding-top: 2px;
+    font-size: 2em;
+    background: rgb(255, 255, 255);
+    color: rgb(40, 40, 40);
+    
+    cursor: pointer;
+}
