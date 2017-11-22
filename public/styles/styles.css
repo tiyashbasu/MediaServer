@@ -11,6 +11,27 @@
     background: rgb(0, 0, 0);
 }
 
+.loadingBox {
+    display: none;
+
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    height: auto;
+    width: auto;
+
+    padding: 30 30 30 30;
+
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+
+    font-size: 3em;
+    font-family: "Times New Roman", Times, serif;
+}
+
 .imgMainImage {
     position: absolute;
     z-index: 1;
@@ -22,8 +43,6 @@
     max-width: 100%;
     height: auto;
     width: auto;
-
-    margin: auto;
 }
 
 .arrowContainer {
@@ -32,6 +51,8 @@
     height: 100%;
     width: auto;
     z-index: 2;
+
+    font-family: "Times New Roman", Times, serif;
 
     opacity: 0;
     -moz-transition: all 0.3s ease-in-out;  /* FF4+ */

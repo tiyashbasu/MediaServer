@@ -11,12 +11,26 @@ $(document).ready(function() {
 });
 
 function clearImage() {
-    document.getElementById("theImage").src = '';
-    document.getElementById("theImageContainerBg").style.backgroundImage = '';
+    document.getElementById("theLoadingBox").style.display = "block";
+
+    $("#theImage").css("opacity", "0.3");
 }
 
 function showImage(imageObj) {
+    document.getElementById("theLoadingBox").style.display = "none";
+
+    $("#theImage").css("opacity", "1");
     document.getElementById("theImage").src = imageObj.src;
+}
+
+function showFirstImageMessage() {
+    document.getElementById("firstImageBox").style.display = "block";
+    $("#firstImageBox").fadeOut(2000);
+}
+
+function showLastImageMessage() {
+    document.getElementById("lastImageBox").style.display = "block";
+    $("#lastImageBox").fadeOut(2000);
 }
 
 $('body').on('contextmenu', 'img', (e) => {
@@ -41,7 +55,7 @@ $('#prev').click(() => {
 function getImage(mode) {
     if (mode == "prev") {
         if (curImageIndex == 0) {
-            console.log("Reached beginning of directory.");
+            showFirstImageMessage();
         } else {
             // console.log("Fetching prev from cache");
             curImageIndex--;
@@ -55,14 +69,15 @@ function getImage(mode) {
             clearImage();
             showImage(imageCache[curImageIndex]);
         } else {
-            clearImage();
             var xhr = new XMLHttpRequest();
 
             xhr.onreadystatechange = () => {
                 if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
                     if (xhr.responseText == "-1") {
-                        console.log("Reached end of directory.");
+                        showLastImageMessage()
                     } else {
+                        clearImage();
+
                         var newImage = new Image();
                         newImage.src = imageSrcPrefix + xhr.responseText;
                         imageCache.push(newImage);
