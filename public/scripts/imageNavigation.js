@@ -3,24 +3,27 @@ var imageFileNamePrefix = "fileName?curFile=";
 
 var imageCache = new Map();
 
-function emptyImageCache() {
-    imageCache = new Map();
-}
-
 function clearImage() {
     document.getElementById("theLoadingBox").style.display = "block";
     $("#theImage").css("opacity", "0.3");
 }
 
 function showImage(imageFileName) {
-    var imageObj = new Image();
-    imageObj.src = imageDataPrefix + imageFileName;
-    imageCache.set(imageFileName, imageObj);
-    imageCache.get(imageFileName).onload = showImageObject(imageCache.get(imageFileName));
+    clearImage();
+
+    if (imageCache.get(imageFileName) == undefined) {
+        var newImage = new Image();
+        newImage.src = imageDataPrefix + imageFileName;
+        imageCache.set(imageFileName, newImage);
+        imageCache.get(imageFileName).onload = () => showImageObject(imageCache.get(imageFileName));
+    } else {
+        showImageObject(imageCache.get(imageFileName));
+    }
 }
 
 function showImageObject(imageObj) {
     document.getElementById("theImage").src = imageObj.src;
+
     document.getElementById("theLoadingBox").style.display = "none";
     $("#theImage").css("opacity", "1");
 }
@@ -36,10 +39,10 @@ function showLastImageMessage() {
 }
 
 var swiper = new Hammer(document.getElementById("theImage"));
-swiper.on("swipeleft", function(e) {
+swiper.on("swipeleft", () => {
     showNextImage()
 });
-swiper.on("swiperight", function(e) {
+swiper.on("swiperight", () => {
     showPrevImage();
 });
 
@@ -50,45 +53,22 @@ $('#prev').click(() => {
     showPrevImage();
 });
 
-function getImageData(fileName) {
-    var newImage = new Image();
-    newImage.src = imageDataPrefix + fileName;
-
-    imageCache.set(fileName, newImage);
+function showNextImage() {
+    if (currentItem.nextSibling == null) {
+        showLastImageMessage();
+    } else {
+        var fileName = document.getElementById('parentFolderName').innerHTML + "/" + currentItem.nextSibling.innerHTML;
+        currentItem = currentItem.nextSibling;
+        showImage(fileName);
+    }
 }
 
 function showPrevImage() {
     if (currentItem.previousSibling.innerHTML == "..") {
         showFirstImageMessage();
     } else {
-        // console.log("Fetching prev from cache");
-        clearImage();
-
         var fileName = document.getElementById('parentFolderName').innerHTML + "/" + currentItem.previousSibling.innerHTML;
-
-        if (imageCache.get(fileName) == undefined) {
-            getImageData(fileName);
-        }
-        
         currentItem = currentItem.previousSibling;
-        showImageObject(imageCache.get(fileName));
-    }
-}
-
-function showNextImage() {
-    if (currentItem.nextSibling == null) {
-        showLastImageMessage();
-    } else {
-        // console.log("Fetching prev from cache");
-        clearImage();
-
-        var fileName = document.getElementById('parentFolderName').innerHTML + "/" + currentItem.nextSibling.innerHTML;
-
-        if (imageCache.get(fileName) == undefined) {
-            getImageData(fileName);
-        }
-        
-        currentItem = currentItem.nextSibling;
-        showImageObject(imageCache.get(fileName));
+        showImage(fileName);
     }
 }
