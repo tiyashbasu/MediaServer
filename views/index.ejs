@@ -8,10 +8,22 @@
     </head>
 
     <body>
+        <div id="theFileSystemContainer" class="paneFileSystem">
+            <div id="parentFolderName" class="parentFolderNameStyle" onmousedown="return false;"></div>
+
+            <div id="folderListPane" class="fileSystemBox" onmousedown="return false;">
+                <ul id="folderList" class="folderListStyle">
+                </ul>
+            </div>
+
+            <div id="showHideFS" style="border-top: 1px solid grey;cursor: pointer;" onmousedown="return false;">&#8650;</div>
+        </div>
+
         <div id="theImageContainer" class='paneImage'>
-            <div id="theLoadingBox" class="loadingBox">Loading...</div>
-            <div id="firstImageBox" class="loadingBox">This is the first photograph</div>
-            <div id="lastImageBox" class="loadingBox">This is the last photograph</div>
+            <div id="theLoadingBox" class="messageBox">Loading...</div>
+            <div id="firstFileBox" class="messageBox">This is the first photograph</div>
+            <div id="lastFileBox" class="messageBox">This is the last photograph</div>
+            <div id="noFileBox" class="messageBox">Click on a photograph from the file browser above to start viewing</div>
 
             <img id="theImage" class="imgMainImage"></img>
 
@@ -19,6 +31,7 @@
                 <div class="emptySpace"></div>
                 <div id='prev' class="buttonArrow">&#8249;</div>
             </div>
+
             <div class='arrowContainer arrowRightContainer' onmousedown="return false;">
                 <div class="emptySpace"></div>
                 <div id='next' class="buttonArrow">&#8250;</div>
@@ -26,5 +39,7 @@
         </div>
 
         <script src="public/scripts/main.js"></script>
+        <script src="public/scripts/imageNavigation.js"></script>
+        <script src="public/scripts/fileSystem.js"></script>
     </body>
 </html>

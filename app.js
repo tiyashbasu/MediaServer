@@ -1,9 +1,14 @@
 'use strict'
 
+var filter = {
+    "image": ["jpg", "jpeg", "png"]
+};
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var fs = require('fs');
+var path = require('path');
 
 var app = express();
 
@@ -21,11 +26,11 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.get('/imagedata', (req, res) => {
-    res.sendFile(req.query.path, {root: __dirname});
+app.get('/fileData', (req, res) => {
+    res.sendFile(path.resolve(req.query.path));
 });
 
-app.get('/image', (req, res) => {
+app.get('/fileName', (req, res) => {
     var absFileName = req.query.curFile;
 
     var pos = absFileName.lastIndexOf('/');
@@ -52,4 +57,50 @@ app.get('/image', (req, res) => {
         res.send(newFileName);
         return;
     });
+});
+
+function sanitizePath(path) {
+    var str = path.replace(/\\/g, "\\\\");
+    str = str.replace(/\"/g, "");
+    return str;
+}
+
+function getFilter(filterName) {
+    switch (filterName) {
+        case "image":
+            return filter.image;
+    }
+}
+
+app.get("/dirContents", (req, res) => {
+    var folderName = sanitizePath(req.query.path);
+    
+    var fileExts = getFilter(req.query.filter);
+
+    fs.readdir(folderName, (err, files) => {
+        var itemList = [];
+        
+        if (files == undefined) {
+            res.send({items: itemList});
+            return;
+        }
+
+        files.forEach((item) => {
+            if (item.indexOf('.') == -1) {
+                itemList.push(item);
+                return;
+            }
+            for (var i = 0; i < fileExts.length; i++) {
+                if (item.toLowerCase().endsWith(fileExts[i]) || item.indexOf('.') == -1) {
+                    itemList.push(item);
+                    return;
+                }
+            }
+        });
+        res.send({items: itemList});
+    });
+});
+
+app.get("/filter/:filterName", (req, res) => {
+    res.send(getFilter(req.params.filterName));
 });
