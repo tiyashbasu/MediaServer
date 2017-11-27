@@ -8,7 +8,6 @@ var currentFolderName;
 var currentFolderItems = [];
 
 var showHideBtnHeight = $("#showHideFS").css("height");
-$("#folderListPane").css("height", "calc(100% - " + showHideBtnHeight + " - " + showHideBtnHeight + ")");
 var fsPaneExpandedHeight = "60%";
 
 $("#showHideFS").click(() => {
@@ -41,10 +40,17 @@ function collapseFSPane() {
 
 function backupFolderAndItems() {
     currentFolderName = document.getElementById('parentFolderName').innerHTML;
+    
     currentFolderItems = [];
-    document.getElementById('folderList').childNodes.forEach((item) => {
-        currentFolderItems.push(item);
-    });
+    var items = document.getElementById('folderList').childNodes;
+    for (var i = 0; i < items.length; i++) {
+        currentFolderItems.push(items[i]);
+    }
+
+    // the following would be great, but doesn't work on PS4 browser
+    // document.getElementById('folderList').childNodes.forEach((item) => {
+    //     currentFolderItems.push(item);
+    // });
 }
 
 function restoreFolderAndItems() {
@@ -53,7 +59,6 @@ function restoreFolderAndItems() {
     $("#folderList").empty();
 
     var itemList = document.getElementById('folderList');
-
     currentFolderItems.forEach((item) => {
         itemList.appendChild(item);
     });
@@ -80,6 +85,7 @@ function populateFolderList(folderName) {
     xhr.onreadystatechange = () => {
         if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
             document.getElementById("parentFolderName").innerHTML = folderName;
+            $("#folderListPane").css("height", "calc(100% - " + showHideBtnHeight + " - " + $("#parentFolderName").css("height") + ")");
 
             var incomingItemList = JSON.parse(xhr.response).items;
 

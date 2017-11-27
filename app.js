@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var filter = {
     "image": ["jpg", "jpeg", "png"]
@@ -20,7 +20,13 @@ app.use(bodyParser.urlencoded({
   extended: true
 })); 
 
-app.listen(3000, () => console.log("Listening on port 3000..."));
+app.listen(3000, (err) => {
+    if (err) {
+        console.log("Could not start server.\nError: " + err);
+    }
+
+    console.log("Listening on port 3000...")
+});
 
 app.get('/', (req, res) => {
     res.render('index');
@@ -104,3 +110,8 @@ app.get("/dirContents", (req, res) => {
 app.get("/filter/:filterName", (req, res) => {
     res.send(getFilter(req.params.filterName));
 });
+
+// app.get("/test/:testString", (req, res) => {
+//     console.log(req.params.testString);
+//     res.send({});
+// });

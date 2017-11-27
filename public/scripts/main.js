@@ -8,3 +8,9 @@ $(document).ready(function() {
 $('body').on('contextmenu', 'img', (e) => {
     return false;
 });
+
+// function test(testString) {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("GET", "test/" + testString, true);
+//     xhr.send();
+// }
