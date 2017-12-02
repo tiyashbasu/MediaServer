@@ -1,4 +1,5 @@
 var dirPrefix = "dirContents?path=";
+var filePropertiesPrefix = "fileProperties?path="
 
 var newFileViewed = false;
 var newFolderViewed = false;
@@ -9,6 +10,19 @@ var currentFolderItems = [];
 
 var showHideBtnHeight = $("#showHideFS").css("height");
 var fsPaneExpandedHeight = "60%";
+
+var filePropertiesMap = new Map();
+
+function getFileProperties(fileName, callback) {
+    if (filePropertiesMap.get(fileName)) {
+        callback(filePropertiesMap.get(fileName));
+    } else {
+        getUri(filePropertiesPrefix + fileName, (response) => {
+            filePropertiesMap.set(fileName, JSON.parse(response))
+            callback(filePropertiesMap.get(fileName));
+        });
+    }
+}
 
 $("#showHideFS").click(() => {
     if (document.getElementById("folderListPane").style.display == 'block') {
@@ -79,38 +93,37 @@ function updateParentFolderName(subFolderName) {
 function populateFolderList(folderName) {
     document.getElementById("noFileBox").style.display = 'none';
 
-    var url = dirPrefix + folderName + "&filter=" + filter;
+    var uri = dirPrefix + folderName + "&filter=" + filter;
 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-            document.getElementById("parentFolderName").innerHTML = folderName;
-            $("#folderListPane").css("height", "calc(100% - " + showHideBtnHeight + " - " + $("#parentFolderName").css("height") + ")");
+    getUri(uri, (response) => {
+        document.getElementById("parentFolderName").innerHTML = folderName;
+        $("#folderListPane").css("height", "calc(100% - " + showHideBtnHeight + " - " + $("#parentFolderName").css("height") + ")");
 
-            var incomingItemList = JSON.parse(xhr.response).items;
+        var incomingItemList = JSON.parse(response).items;
 
-            var itemList = document.getElementById('folderList');
+        var itemList = document.getElementById('folderList');
 
-            $("#folderList").empty();
+        $("#folderList").empty();
 
+        var listItem = document.createElement('li');
+        listItem.innerHTML = "..";
+        listItem.className = "folderItemStyle";
+        itemList.appendChild(listItem);
+
+        incomingItemList.forEach((item) => {
             var listItem = document.createElement('li');
-            listItem.innerHTML = "..";
+            listItem.innerHTML = item;
             listItem.className = "folderItemStyle";
             itemList.appendChild(listItem);
-
-            incomingItemList.forEach((item) => {
-                var listItem = document.createElement('li');
-                listItem.innerHTML = item;
-                listItem.className = "folderItemStyle";
-                itemList.appendChild(listItem);
-            });
-        }
-    }
-    xhr.open("GET", url, true);
-    xhr.send();
+        });
+    });
 }
 
 $("#folderList").click((e) => {
+    if (e.target.tagName != 'LI') {
+        return;
+    }
+
     var clickedItemInnerHTML = e.target.innerHTML;
 
     if (clickedItemInnerHTML == ".." || clickedItemInnerHTML.indexOf('.') == -1) {

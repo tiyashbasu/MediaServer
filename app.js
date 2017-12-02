@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var fs = require('fs');
 var path = require('path');
+var exifParser = require('exif-parser');
 
 var app = express();
 
@@ -34,6 +35,13 @@ app.get('/', (req, res) => {
 
 app.get('/fileData', (req, res) => {
     res.sendFile(path.resolve(req.query.path));
+});
+
+app.get('/fileProperties', (req, res) => {
+    fs.readFile(path.resolve(req.query.path), (err, rawFileData) => {
+        var exifProperties = exifParser.create(rawFileData).parse();
+        res.send(exifProperties);
+    });
 });
 
 app.get('/fileName', (req, res) => {
