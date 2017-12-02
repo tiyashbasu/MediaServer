@@ -1,5 +1,6 @@
 var imageDataPrefix = "fileData?path=";
 var imageFileNamePrefix = "fileName?curFile=";
+var filePropertiesPrefix = "fileProperties?path="
 
 var imgCanvas = document.getElementById("theImage");
 var imgCanvasCtx = imgCanvas.getContext("2d");
@@ -9,6 +10,17 @@ var imageCache = new Map();
 function clearImage() {
     document.getElementById("theLoadingBox").style.display = "block";
     $("#theImage").css("opacity", "0.3");
+}
+
+function getFileProperties(fileName, callback) {
+    if (filePropertiesMap.get(fileName)) {
+        callback(filePropertiesMap.get(fileName));
+    } else {
+        getUri(filePropertiesPrefix + fileName, (response) => {
+            filePropertiesMap.set(fileName, JSON.parse(response))
+            callback(filePropertiesMap.get(fileName));
+        });
+    }
 }
 
 function showImage(imageFileName) {

@@ -8,15 +8,17 @@
     </head>
 
     <body>
+        <div id="bodyPane">
         <div id="theFileSystemContainer" class="paneFileSystem">
             <div id="parentFolderName" class="parentFolderNameStyle" onmousedown="return false;"></div>
 
-            <div id="folderListPane" class="fileSystemBox" onmousedown="return false;">
-                <ul id="folderList" class="folderListStyle">
-                </ul>
+            <div id="folderListPane" class="folderListPaneStyle" onmousedown="return false;">
+                <ul id="folderList" class="folderListStyle"></ul>
             </div>
 
-            <div id="showHideFS" style="border-top: 1px solid grey;cursor: pointer;" onmousedown="return false;">&#8650;</div>
+            <div id="showHideFS" class="showHideFSStyle" onmousedown="return false;">
+                ...
+            </div>
         </div>
 
         <div id="theImageContainer" class='paneImage'>
@@ -36,6 +38,7 @@
                 <div class="emptySpace"></div>
                 <div id='next' class="buttonArrow">&#8250;</div>
             </div>
+        </div>
         </div>
 
         <script src="public/scripts/main.js"></script>
