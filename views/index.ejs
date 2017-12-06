@@ -9,55 +9,55 @@
 
     <body>
         <div id="bodyPane">
-        <div id="theFileSystemContainer" class="paneFileSystem">
-            <div id="parentFolderName" class="parentFolderNameStyle" onmousedown="return false;"></div>
+        <div id="fileExplorerContainer" class="fileExplorerContainerStyle">
+            <div id="dirName" class="dirNameStyle" onmousedown="return false;"></div>
 
-            <div id="folderListPane" class="folderListPaneStyle" onmousedown="return false;">
-                <ul id="folderList" class="folderListStyle"></ul>
+            <div id="dirContents" class="dirContentsStyle" onmousedown="return false;">
+                <ul id="dirContentsList" class="dirContentsListStyle"></ul>
             </div>
 
-            <div id="showHideFS" class="showHideFSStyle" onmousedown="return false;">
+            <div id="toggleFileExplorer" class="toggleBtnStyle toggleBtnTopLeftStyle" onmousedown="return false;">
                 ...
             </div>
         </div>
 
-        <div id="theImageContainer" class='paneImage'>
-            <div id="theLoadingBox" class="messageBox" onmousedown="return false;">Loading...</div>
-            <div id="firstFileBox" class="messageBox" onmousedown="return false;">This is the first photograph</div>
-            <div id="lastFileBox" class="messageBox" onmousedown="return false;">This is the last photograph</div>
-            <div id="noFileBox" class="messageBox" onmousedown="return false;">Click on a photograph from the file browser above to start viewing</div>
+        <div id="mediaContainer" class='mediaContainerStyle'>
+            <div id="loadingMsgBox" class="msgBoxStyle" onmousedown="return false;">Loading...</div>
+            <div id="firstFileMsgBox" class="msgBoxStyle" onmousedown="return false;">This is the first media file</div>
+            <div id="lastFileMsgBox" class="msgBoxStyle" onmousedown="return false;">This is the last media file</div>
+            <div id="noFileLoadedMsgBox" class="msgBoxStyle" onmousedown="return false;">Select a media file from the file explorer to start viewing</div>
 
-            <img id="theImage" class="imgMainImage"></img>
-            <!-- <canvas id="theImage" class="imgMainImage"></canvas> -->
+            <img id="mediaFile" class="mediaFileStyle"></img>
+            <!-- <canvas id="mediaFile" class="mediaFileStyle"></canvas> -->
 
-            <div id="prevArrowContainer" class='arrowContainer arrowLeftContainer' onmousedown="return false;">
-                <div class="emptySpace"></div>
-                <div id='prev' class="buttonArrow">&#8249;</div>
+            <div id="prevMediaBtnContainer" class='arrowBtnContainer arrowLeftBtnContainer' onmousedown="return false;">
+                <div class="emptySpaceMediaBtn"></div>
+                <div id='prevMediaBtn' class="arrowBtnStyle">&#8249;</div>
             </div>
 
-            <div id="nextArrowContainer" class='arrowContainer arrowRightContainer' onmousedown="return false;">
-                <div class="emptySpace"></div>
-                <div id='next' class="buttonArrow">&#8250;</div>
+            <div id="nextMediaBtnContainer" class='arrowBtnContainer arrowRightBtnContainer' onmousedown="return false;">
+                <div class="emptySpaceMediaBtn"></div>
+                <div id='nextMediaBtn' class="arrowBtnStyle">&#8250;</div>
             </div>
 
             <div id="fileProperties" class="filePropertiesStyle" onmousedown="return false;">
-                <div id="showHideFileProps" class="showHideFilePropsStyle" onmousedown="return false;">
+                <div id="toggleFileProperties" class="toggleBtnStyle toggleBtnBottomRightStyle" onmousedown="return false;">
                     ...
                 </div>
 
-                <div id="fileProps" class="filePropsStyle" onmousedown="return false;">
-                    <table class="propTableStyle">
+                <div id="filePropertiesContainer" class="filePropertiesContainerStyle" onmousedown="return false;">
+                    <table class="propertiesTableStyle">
                         <tr>
-                            <th class="propTableCellStyle">Focal Length</th>
-                            <th class="propTableCellStyle">Aperture</th>
-                            <th class="propTableCellStyle">Shutter Speed</th>
-                            <th class="propTableCellStyle">ISO</th>
+                            <th class="propertiesTableCellStyle">Focal Length</th>
+                            <th class="propertiesTableCellStyle">Aperture</th>
+                            <th class="propertiesTableCellStyle">Shutter Speed</th>
+                            <th class="propertiesTableCellStyle">ISO</th>
                         </tr>
                         <tr>
-                            <td id="focalLength" class="propTableCellStyle"></th>
-                            <td id="aperture" class="propTableCellStyle"></th>
-                            <td id="shutterSpeed" class="propTableCellStyle"></th>
-                            <td id="iso" class="propTableCellStyle"></th>
+                            <td id="focalLength" class="propertiesTableCellStyle"></th>
+                            <td id="aperture" class="propertiesTableCellStyle"></th>
+                            <td id="shutterSpeed" class="propertiesTableCellStyle"></th>
+                            <td id="iso" class="propertiesTableCellStyle"></th>
                         </tr>
                     </table>
                 </div>
@@ -65,8 +65,11 @@
         </div>
         </div>
 
-        <script src="public/scripts/main.js"></script>
-        <script src="public/scripts/imageNavigation.js"></script>
-        <script src="public/scripts/fileSystem.js"></script>
+        <script src="public/scripts/globalVars.js"></script>
+        <script src="public/scripts/eventHandlers.js"></script>
+
+        <script src="public/scripts/util.js"></script>
+        <script src="public/scripts/media.js"></script>
+        <script src="public/scripts/fileExplorer.js"></script>
     </body>
 </html>

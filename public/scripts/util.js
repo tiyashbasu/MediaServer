@@ -1,14 +1,3 @@
-var filter = "image";
-
-$(document).ready(function() {
-    populateFolderList("C:/Users/Tiyash Basu/Pictures/Sony-a68");
-    document.getElementById("noFileBox").style.display = "block";
-});
-
-$('body').on('contextmenu', 'canvas', (e) => {
-    return false;
-});
-
 function getUri(uri, callback, async = true) {
     var xhr = new XMLHttpRequest();
 
@@ -23,10 +12,7 @@ function getUri(uri, callback, async = true) {
 }
 
 function isFullscreenEnabled() {
-    return document.fullscreenEnabled || 
-        document.webkitFullscreenEnabled || 
-        document.mozFullScreenEnabled ||
-        document.msFullscreenEnabled;
+    return document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled;
 }
 
 function requestFullscreen(htmlItem) {
@@ -52,24 +38,6 @@ function exitFullScreen() {
         document.msExitFullscreen();
     }
 }
-
-var fullScreen = false;
-
-$("#theImage").click(() => {
-    if (isFullscreenEnabled()) {
-        requestFullscreen(document.getElementById("theImageContainer"));
-    }
-});
-
-$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange msfullscreenchange', function(e)
-{
-    if (fullScreen) {
-        fullScreen = false;
-    } else {
-        collapseFSPane();
-        fullScreen = true;
-    }
-});
 
 // function test(testString) {
 //     var xhr = new XMLHttpRequest();

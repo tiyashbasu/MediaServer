@@ -137,7 +137,7 @@ app.get("/dirContents", (req, res) => {
                 }
             }
         });
-        res.send({items: itemList});
+        res.send({contents: itemList});
     });
 });
 
