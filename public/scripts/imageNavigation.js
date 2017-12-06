@@ -28,12 +28,22 @@ function showImage(imageFileName) {
 
     if (imgMapItem) {
         showImageObject(imgMapItem.img, imgMapItem.exifProperties.tags.Orientation);
+        
+        document.getElementById("focalLength").innerHTML = imgMapItem.exifProperties.tags.FocalLength;
+        document.getElementById("aperture").innerHTML = "f/" + imgMapItem.exifProperties.tags.FNumber;
+        document.getElementById("shutterSpeed").innerHTML = Math.round(imgMapItem.exifProperties.tags.ExposureTime * 10000) / 10000 + "s";
+        document.getElementById("iso").innerHTML = imgMapItem.exifProperties.tags.ISO;
     } else {
         var image = new Image();
         image.onload = () => {
             getFileProperties(imageFileName, (properties) => {
                 imageCache.set(imageFileName, {img: image, exifProperties: properties});
                 showImageObject(image, properties.tags.Orientation);
+
+                document.getElementById("focalLength").innerHTML = properties.tags.FocalLength;
+                document.getElementById("aperture").innerHTML = "f/" + properties.tags.FNumber;
+                document.getElementById("shutterSpeed").innerHTML = Math.round(properties.tags.ExposureTime * 10000) / 10000 + "s";
+                document.getElementById("iso").innerHTML = properties.tags.ISO;
             });
         }
         image.onerror = (e) => {
@@ -130,10 +140,6 @@ function showLastImageMessage() {
     $("#lastFileBox").delay(500).fadeOut(2000);
 }
 
-$(".arrowContainer").hover(() => {
-    $("#showHideFS").css("opacity", "1");
-});
-
 var swiper = new Hammer(document.getElementById("theImage"));
 swiper.on("swipeleft", () => {
     showNextImage()
@@ -168,3 +174,31 @@ function showPrevImage() {
         showImage(fileName);
     }
 }
+
+$("#showHideFileProps").hover(() => {
+    $("#showHideFileProps").css("opacity", "0.7");
+});
+
+function showHideFileProperties() {
+    if ($("#fileProperties").css("width") == "0px") {
+        $("#fileProperties").css("width", "100%");
+
+        $("#showHideFileProps").mouseout(() => {
+            $("#showHideFileProps").css("opacity", "0.1");
+        });
+    } else {
+        $("#fileProperties").css("width", "0%");
+
+        $("#showHideFileProps").mouseout(() => {
+            $("#showHideFileProps").css("opacity", "0");
+        });
+    }
+}
+
+$("#showHideFileProps").click(() => {
+    showHideFileProperties();
+});
+
+$("#fileProperties").click(() => {
+    showHideFileProperties();
+});
