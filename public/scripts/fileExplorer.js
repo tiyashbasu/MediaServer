@@ -1,7 +1,5 @@
 function expandFileExplorer() {
-    document.getElementById("dirName").style.display = 'block';
-    document.getElementById("dirContents").style.display = 'block';
-
+    $("#dirName").css("padding", "5 5 5 5");
     $("#fileExplorerContainer").css("width", "20%");
 
     $("#mediaContainer").css("width", "80%");
@@ -11,10 +9,8 @@ function expandFileExplorer() {
 }
 
 function collapseFileExplorer() {
-    document.getElementById("dirName").style.display = 'none';
-    document.getElementById("dirContents").style.display = 'none';
-
     $("#fileExplorerContainer").css("width", "0px");
+    $("#dirName").css("padding", "0 0 0 0");
 
     $("#mediaContainer").css("width", "100%");
     $("#mediaContainer").css("left", "0%");
@@ -71,7 +67,7 @@ function populateDirContents(folderName) {
 
     getUri(uri, (response) => {
         document.getElementById("dirName").innerHTML = folderName;
-        $("#dirContents").css("height", "calc(100% - " + showHideBtnHeight + " - " + $("#dirName").css("height") + ")");
+        $("#dirContents").css("height", "calc(100% - " + $("#dirName").css("height") + ")");
 
         var incomingContents = JSON.parse(response).contents;
 
@@ -81,13 +77,13 @@ function populateDirContents(folderName) {
 
         var listItem = document.createElement('li');
         listItem.innerHTML = "..";
-        listItem.className = "folderItemStyle";
+        listItem.className = "dirContentsListItemStyle";
         contentsList.appendChild(listItem);
 
         incomingContents.forEach((item) => {
             var listItem = document.createElement('li');
             listItem.innerHTML = item;
-            listItem.className = "folderItemStyle";
+            listItem.className = "dirContentsListItemStyle";
             contentsList.appendChild(listItem);
         });
     });

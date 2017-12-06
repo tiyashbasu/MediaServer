@@ -27,12 +27,12 @@ $("#toggleFileExplorer").hover(() => {
 $("#toggleFileExplorer").click(() => {
     var opacity;
 
-    if (document.getElementById("dirContents").style.display == 'block') {
-        collapseFileExplorer();
-        opacity = "0";
-    } else {
+    if ($("#fileExplorerContainer").css("width") == "0px") {
         expandFileExplorer();        
         opacity = "1";
+    } else {
+        collapseFileExplorer();
+        opacity = "0";
     }
     
     $("#toggleFileExplorer").mouseout(() => {
@@ -54,7 +54,6 @@ $("#dirContentsList").click((e) => {
         populateDirContents(document.getElementById('dirName').innerHTML);
     } else {
         backupFileExplorerView();
-        
         newFileViewed = true;
 
         currentFileListItem = e.target; // required, not by mistake
@@ -83,20 +82,44 @@ $('#prevMediaBtn').click(() => {
     showPrevMedia();
 });
 
-$("#mediaFile").click(() => {
-    if (isFullscreenEnabled()) {
-        requestFullscreen(document.getElementById("mediaContainer"));
+$("#mediaFile").click((e) => { // display properties
+    if (!isTappedOnce) {
+        isTappedOnce = true;
+        tapTimeout = setTimeout(() => {
+            if (isTappedOnce && $("#filePropertiesContainer").css("width") == "0px") {
+                $("#filePropertiesContainer").css("width", "100%");
+            } else {
+                $("#filePropertiesContainer").css("width", "0%");
+            }
+            isTappedOnce = false;
+        }, 300);
+    } else {
+        clearTimeout(tapTimeout);
+        isTappedOnce = false;
+
+        if (fullScreen) {
+            exitFullScreen();
+        } else if (isFullscreenEnabled()) {
+            requestFullscreen(document.getElementById("mediaContainer"));
+        }
     }
+
+    e.preventDefault();
 });
 
-$("#fileProperties").click(() => {
-    toggleFileProperties();
-});
 
-$("#toggleFileProperties").click(() => {
-    toggleFileProperties();
-});
+// $("#mediaFile").click(() => { // display properties
+//     if ($("#filePropertiesContainer").css("width") == "0px") {
+//         $("#filePropertiesContainer").css("width", "100%");
+//     } else {
+//         $("#filePropertiesContainer").css("width", "0%");
+//     }
+// });
 
-$("#toggleFileProperties").hover(() => {
-    $("#toggleFileProperties").css("opacity", "0.7");
-});
+// $("#mediaFile").dblclick(() => { // full screen
+//     if (fullScreen) {
+//         exitFullScreen();
+//     } else if (isFullscreenEnabled()) {
+//         requestFullscreen(document.getElementById("mediaContainer"));
+//     }
+// });

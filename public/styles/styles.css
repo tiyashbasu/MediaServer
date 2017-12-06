@@ -1,21 +1,33 @@
+.fileExplorerContainerStyle {
+    position: absolute;
+    left: 0%;
+    z-index: 3;
+
+    width: 0%;
+    height: 100%;
+
+    background-color: rgb(250, 250, 250);
+
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
 .dirNameStyle {
-    display: none;
     border-bottom: 1px solid grey;
-    cursor: pointer;
     font-size: 1.5em;
     font-family: "Times New Roman", Times, serif;
-
-    padding: 5 5 5 5;
-
     cursor: pointer;
+    overflow: hidden;
 }
 
 .dirContentsStyle {
-    display: none;
     font-size: 1.5em;
     font-family: "Times New Roman", Times, serif;
-    overflow-y: scroll;
     cursor: pointer;
+    overflow-y: scroll;
 }
 
 .dirContentsListStyle {
@@ -24,20 +36,9 @@
     list-style: none;
 }
 
-.fileExplorerContainerStyle {
-    position: absolute;
-    left: 0%;
-    z-index: 3;
-
-    height: 100%;
-
-    background-color: rgb(250, 250, 250);
-
-    /* -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out; */
+.dirContentsListItemStyle {
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .toggleBtnStyle {
@@ -184,11 +185,9 @@
     position: absolute;
     bottom: 0%;
     right: 0%;
-    height: 50px;
     z-index: 3;
 
-    width: 0%;
-    display: inline-block;
+    width: 0px;
     
     -moz-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
@@ -201,26 +200,36 @@
     position: absolute;
     bottom: 0%;
     right: 0%;
+    z-index: 3;
+
     height: 50px;
-    width: 100%;
+    width: 0%;
 
     background-color: rgba(250, 250, 250, 0);
 
     overflow: hidden;
+
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .propertiesTableStyle {
     position: absolute;
-    right: 0%;
-    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+    left: 50%;
+    transform: translate(-50%, 0);
+    /* font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace; */
+    font-family: "Times New Roman", Times, serif;
     text-align: center;
-    color: blue;
-    background-color: rgba(250, 250, 250, 0.3);
+    color: black;
+    background-color: rgba(250, 250, 250, 0.7);
 }
 
 .propertiesTableCellStyle {
-    /* border: 1px solid black; */
-    width: 25%;
-    padding: 3 0 3 0;
+    width: auto;
+    height: auto;
+    padding: 2 5 2 5;
     text-align: center;
 }

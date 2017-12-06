@@ -14,9 +14,6 @@ var fileNamePrefix = "fileName?curFile=";
 var filePropertiesPrefix = "fileProperties?path=";
 var filePrefix = "file?path=";
 
-var newFileViewed = false;
-var newFolderViewed = false;
-
 var currentFileListItem;
 
 var currentFolderName;
@@ -27,4 +24,9 @@ var fsPaneExpandedHeight = "100%";
 
 var fileCache = new Map();
 
+var newFileViewed = false;
+var newFolderViewed = false;
 var fullScreen = false;
+
+var isTappedOnce = false;
+var tapTimeout;

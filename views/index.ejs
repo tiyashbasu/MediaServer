@@ -9,15 +9,15 @@
 
     <body>
         <div id="bodyPane">
-        <div id="fileExplorerContainer" class="fileExplorerContainerStyle">
+        <div id="fileExplorerContainer" class="fileExplorerContainerStyle">                
+            <div id="toggleFileExplorer" class="toggleBtnStyle toggleBtnTopLeftStyle" onmousedown="return false;">
+                ...
+            </div>
+            
             <div id="dirName" class="dirNameStyle" onmousedown="return false;"></div>
 
             <div id="dirContents" class="dirContentsStyle" onmousedown="return false;">
                 <ul id="dirContentsList" class="dirContentsListStyle"></ul>
-            </div>
-
-            <div id="toggleFileExplorer" class="toggleBtnStyle toggleBtnTopLeftStyle" onmousedown="return false;">
-                ...
             </div>
         </div>
 
@@ -40,27 +40,23 @@
                 <div id='nextMediaBtn' class="arrowBtnStyle">&#8250;</div>
             </div>
 
-            <div id="fileProperties" class="filePropertiesStyle" onmousedown="return false;">
-                <div id="toggleFileProperties" class="toggleBtnStyle toggleBtnBottomRightStyle" onmousedown="return false;">
-                    ...
-                </div>
-
-                <div id="filePropertiesContainer" class="filePropertiesContainerStyle" onmousedown="return false;">
-                    <table class="propertiesTableStyle">
-                        <tr>
-                            <th class="propertiesTableCellStyle">Focal Length</th>
-                            <th class="propertiesTableCellStyle">Aperture</th>
-                            <th class="propertiesTableCellStyle">Shutter Speed</th>
-                            <th class="propertiesTableCellStyle">ISO</th>
-                        </tr>
-                        <tr>
-                            <td id="focalLength" class="propertiesTableCellStyle"></th>
-                            <td id="aperture" class="propertiesTableCellStyle"></th>
-                            <td id="shutterSpeed" class="propertiesTableCellStyle"></th>
-                            <td id="iso" class="propertiesTableCellStyle"></th>
-                        </tr>
-                    </table>
-                </div>
+            <div id="filePropertiesContainer" class="filePropertiesContainerStyle" onmousedown="return false;">
+                <table class="propertiesTableStyle">
+                    <tr>
+                        <th class="propertiesTableCellStyle">File Name</th>
+                        <th class="propertiesTableCellStyle">Focal Length</th>
+                        <th class="propertiesTableCellStyle">Aperture</th>
+                        <th class="propertiesTableCellStyle">Shutter Speed</th>
+                        <th class="propertiesTableCellStyle">ISO</th>
+                    </tr>
+                    <tr>
+                        <td id="fileName" class="propertiesTableCellStyle"></th>
+                        <td id="focalLength" class="propertiesTableCellStyle"></th>
+                        <td id="aperture" class="propertiesTableCellStyle"></th>
+                        <td id="shutterSpeed" class="propertiesTableCellStyle"></th>
+                        <td id="iso" class="propertiesTableCellStyle"></th>
+                    </tr>
+                </table>
             </div>
         </div>
         </div>

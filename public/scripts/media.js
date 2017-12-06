@@ -18,10 +18,12 @@ function getMediaEXIFProperties(fileName, callback) {
 function showMedia(fileName) {
     clearCurrentMedia();
 
+    document.getElementById("fileName").innerHTML = fileName.substring(fileName.lastIndexOf("/") + 1);
+    
     var fileNameExt = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
     var mimeType = mimeTypes[fileNameExt];
 
-    var fileCacheMapItem = fileCache.get(fileName)
+    var fileCacheMapItem = fileCache.get(fileName);
 
     if (fileCacheMapItem) {
         switch (mimeType) {
@@ -65,7 +67,7 @@ function setMediaDisplayDimensions(imageAR) {
     }
 }
 
-function showImage(imageObj, properties) {    
+function showImage(imageObj, properties) {
     document.getElementById("focalLength").innerHTML = properties.tags.FocalLength;
     document.getElementById("aperture").innerHTML = "f/" + properties.tags.FNumber;
     document.getElementById("shutterSpeed").innerHTML = Math.round(properties.tags.ExposureTime * 10000) / 10000 + "s";
@@ -144,6 +146,10 @@ function showLastMediaMessage() {
 }
 
 function showNextMedia() {
+    if (!currentFileListItem) {
+        return;
+    }
+
     if (currentFileListItem.nextSibling == null) {
         showLastMediaMessage();
     } else {
@@ -154,6 +160,10 @@ function showNextMedia() {
 }
 
 function showPrevMedia() {
+    if (!currentFileListItem) {
+        return;
+    }
+
     if (currentFileListItem.previousSibling.innerHTML == "..") {
         showFirstMediaMessage();
     } else {
@@ -161,20 +171,4 @@ function showPrevMedia() {
         currentFileListItem = currentFileListItem.previousSibling;
         showMedia(fileName);
     }
-}
-
-function toggleFileProperties() {
-    var opacity;
-
-    if ($("#fileProperties").css("width") == "0px") {
-        $("#fileProperties").css("width", "100%");
-        opacity = "0.1";
-    } else {
-        $("#fileProperties").css("width", "0%");
-        opacity = "0";
-    }
-
-    $("#toggleFileProperties").mouseout(() => {
-        $("#toggleFileProperties").css("opacity", opacity);
-    });
 }
