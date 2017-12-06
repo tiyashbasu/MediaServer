@@ -29,7 +29,7 @@
 .paneFileSystem {
     position: absolute;
     left: 0%;
-    z-index: 2;
+    z-index: 3;
 
     height: 100%;
 
@@ -43,10 +43,6 @@
     -webkit-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out; */
-}
-
-.paneFileSystem:hover {
-    opacity: 1;
 }
 
 .showHideFSStyle {
@@ -75,6 +71,7 @@
     position: absolute;
     top: 0%;
     z-index: 1;
+    left: 0%;
 
     height: 100%;
     width: 100%;
@@ -83,18 +80,18 @@
     
     background: rgb(0, 0, 0);
     
-    /* -moz-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out; */
+    transition: all 0.3s ease-in-out;
 }
 
 .messageBox {
     display: none;
 
     position: absolute;
-    z-index: 3;
+    z-index: 2;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -109,7 +106,6 @@
 
     font-size: 3em;
     font-family: "Times New Roman", Times, serif;
-    /* text-shadow: -1px 0 rgb(200, 200, 200), 0 1px rgb(200, 200, 200), 1px 0 rgb(200, 200, 200), 0 -1px rgb(200, 200, 200); */
 }
 
 .imgMainImage {
@@ -121,6 +117,7 @@
 
     max-height: 100%;
     max-width: 100%;
+
     height: auto;
     width: auto;
 }

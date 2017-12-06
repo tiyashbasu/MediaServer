@@ -53,23 +53,21 @@ function exitFullScreen() {
     }
 }
 
-var initialImgPaneWidth;
+var fullScreen = false;
 
 $("#theImage").click(() => {
     if (isFullscreenEnabled()) {
-        initialImgPaneWidth = $("#theImageContainer").css("width");
         requestFullscreen(document.getElementById("theImageContainer"));
     }
 });
 
 $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange msfullscreenchange', function(e)
 {
-    if ($("#theImageContainer").css("width") == initialImgPaneWidth) {
-        $("#theImageContainer").css("width", "100%");
-        $("#theImageContainer").css("left", "0%");
+    if (fullScreen) {
+        fullScreen = false;
     } else {
-        $("#theImageContainer").css("width", initialImgPaneWidth);
-        $("#theImageContainer").css("left", "20%");
+        collapseFSPane();
+        fullScreen = true;
     }
 });
 

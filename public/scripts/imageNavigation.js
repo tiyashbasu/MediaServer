@@ -1,13 +1,11 @@
 var imageDataPrefix = "fileData?path=";
 var imageFileNamePrefix = "fileName?curFile=";
-var filePropertiesPrefix = "fileProperties?path="
-
-var imgCanvas = document.getElementById("theImage");
-var imgCanvasCtx = imgCanvas.getContext("2d");
+var filePropertiesPrefix = "fileProperties?path=";
+var imagePrefix = "file?path=";
 
 var imageCache = new Map();
 
-function clearImage() {
+function clearCurrentImage() {
     document.getElementById("theLoadingBox").style.display = "block";
     $("#theImage").css("opacity", "0.3");
 }
@@ -24,71 +22,99 @@ function getFileProperties(fileName, callback) {
 }
 
 function showImage(imageFileName) {
-    clearImage();
+    clearCurrentImage();
 
-    if (imageCache.get(imageFileName)) {
-        getFileProperties(imageFileName, (properties) => {
-            showImageObject(imageCache.get(imageFileName), properties.tags.Orientation);
-        });
+    var imgMapItem = imageCache.get(imageFileName)
+
+    if (imgMapItem) {
+        showImageObject(imgMapItem.img, imgMapItem.exifProperties.tags.Orientation);
     } else {
-        var newImage = new Image();
-        newImage.src = imageDataPrefix + imageFileName;
-        imageCache.set(imageFileName, newImage);
-        imageCache.get(imageFileName).onload = () => {
+        var image = new Image();
+        image.onload = () => {
             getFileProperties(imageFileName, (properties) => {
-                showImageObject(imageCache.get(imageFileName), properties.tags.Orientation);
+                imageCache.set(imageFileName, {img: image, exifProperties: properties});
+                showImageObject(image, properties.tags.Orientation);
             });
         }
+        image.onerror = (e) => {
+            console.log(e);
+        };
+        image.src = imageDataPrefix + imageFileName;
     }
 }
 
-function swap(a, b) {
-    var temp = a;
-    a = b;
-    b = temp;
-}
+function setImageDimensions(imageAR) {
+    var screenWidth = document.getElementById("theImageContainer").clientWidth;
+    var screenHeight = document.getElementById("theImageContainer").clientHeight;
+    var screenAR = screenWidth / screenHeight;
 
-function setCanvasDimensions(imageAR) {
-    var screenAR = screen.width / screen.height;
     if (imageAR > screenAR) { // i.e., image will have black strips at top and bottom
-        imgCanvas.width = screen.width;
-        imgCanvas.height = screen.width / imageAR;
+        $("#theImage").css("width", screenWidth + "px");
+        $("#theImage").css("height", screenWidth / imageAR + "px");
     } else { //i.e., image will have black strips at left and right
-        imgCanvas.width = screen.height * imageAR;
-        imgCanvas.height = screen.height;
+        $("#theImage").css("width", screenHeight * imageAR + "px");
+        $("#theImage").css("height", screenHeight + "px");
     }
 }
 
 function showImageObject(imageObj, orientation) {
-    // document.getElementById("theImage").src = imageObj.src;
+    document.getElementById("theImage").src = imageObj.src;
 
     var imageAR = imageObj.width / imageObj.height;
-    setCanvasDimensions(imageAR);
 
-    var imgWidth = imgCanvas.width;
-    var imgHeight = imgCanvas.height;
+    var screenWidth = document.getElementById("theImageContainer").clientWidth;
+    var screenHeight = document.getElementById("theImageContainer").clientHeight;
+    var screenAR = screenWidth / screenHeight;
+
+    if (imageAR < screenAR) {
+        imageAR = 1 / imageAR;
+    }
+
+    // reset theImage transformation
+    $("#theImage").css({
+        "transform-origin": "0% 0%",
+        "transform": "rotate(0deg) translate(-50%, -50%)"
+    });
 
     switch (orientation) {
     case 3: // 180 degrees
-        imgCanvasCtx.rotate(Math.PI);
-        imgCanvasCtx.translate(-imgCanvas.width, -imgCanvas.height);
+        $("#theImage").css({
+            "transform-origin": "25% 25%",
+            "transform": "rotate(180deg)"
+        });
         break;
+
     case 6: // 90 degrees
-        imgWidth = imgCanvas.height;
-        imgHeight = imgCanvas.height / imageAR;
-        imgCanvasCtx.rotate(Math.PI * 0.5);
-        imgCanvasCtx.translate(0, -(imgHeight + imgCanvas.width) * 0.5);
+        if (imageAR <= 1) {
+            $("#theImage").css({
+                "transform-origin": "30% -20%",
+                "transform": "scale(" + imageAR + "," + imageAR + ") rotate(90deg)"
+            });
+        } else {
+            $("#theImage").css({
+                "transform-origin": "50% 0%",
+                "transform": "scale(" + imageAR + "," + imageAR + ") rotate(90deg)"
+            });
+        }
         break;
+
     case 8: // 270 degrees
-        imgWidth = imgCanvas.height;
-        imgHeight = imgCanvas.height / imageAR;
-        imgCanvasCtx.rotate(Math.PI * -0.5);
-        imgCanvasCtx.translate(-imgWidth, (imgCanvas.width - imgHeight) * 0.5);
+        if (imageAR <= 1) {
+            $("#theImage").css({
+                "transform-origin": "0% 50%",
+                "transform": "scale(" + imageAR + "," + imageAR + ") rotate(270deg)"
+            });
+        } else {
+            $("#theImage").css({
+                "transform-origin": "19% 69%",
+                "transform": "scale(" + imageAR + "," + imageAR + ") rotate(270deg)"
+            });
+        }
         break;
+
     default:
         break;
     }
-    imgCanvasCtx.drawImage(imageObj, 0, 0, imageObj.width, imageObj.height, 0, 0, imgWidth, imgHeight);
 
     document.getElementById("theLoadingBox").style.display = "none";
     $("#theImage").css("opacity", "1");
@@ -103,6 +129,10 @@ function showLastImageMessage() {
     document.getElementById("lastFileBox").style.display = "block";
     $("#lastFileBox").delay(500).fadeOut(2000);
 }
+
+$(".arrowContainer").hover(() => {
+    $("#showHideFS").css("opacity", "1");
+});
 
 var swiper = new Hammer(document.getElementById("theImage"));
 swiper.on("swipeleft", () => {

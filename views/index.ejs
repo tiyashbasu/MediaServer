@@ -22,19 +22,20 @@
         </div>
 
         <div id="theImageContainer" class='paneImage'>
-            <div id="theLoadingBox" class="messageBox">Loading...</div>
-            <div id="firstFileBox" class="messageBox">This is the first photograph</div>
-            <div id="lastFileBox" class="messageBox">This is the last photograph</div>
-            <div id="noFileBox" class="messageBox">Click on a photograph from the file browser above to start viewing</div>
+            <div id="theLoadingBox" class="messageBox" onmousedown="return false;">Loading...</div>
+            <div id="firstFileBox" class="messageBox" onmousedown="return false;">This is the first photograph</div>
+            <div id="lastFileBox" class="messageBox" onmousedown="return false;">This is the last photograph</div>
+            <div id="noFileBox" class="messageBox" onmousedown="return false;">Click on a photograph from the file browser above to start viewing</div>
 
-            <canvas id="theImage" class="imgMainImage"></canvas>
+            <img id="theImage" class="imgMainImage"></img>
+            <!-- <canvas id="theImage" class="imgMainImage"></canvas> -->
 
-            <div class='arrowContainer arrowLeftContainer' onmousedown="return false;">
+            <div id="prevArrowContainer" class='arrowContainer arrowLeftContainer' onmousedown="return false;">
                 <div class="emptySpace"></div>
                 <div id='prev' class="buttonArrow">&#8249;</div>
             </div>
 
-            <div class='arrowContainer arrowRightContainer' onmousedown="return false;">
+            <div id="nextArrowContainer" class='arrowContainer arrowRightContainer' onmousedown="return false;">
                 <div class="emptySpace"></div>
                 <div id='next' class="buttonArrow">&#8250;</div>
             </div>

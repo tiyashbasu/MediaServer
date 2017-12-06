@@ -10,6 +10,7 @@ var path = require('path');
 var fs = require('fs');
 var path = require('path');
 var exifParser = require('exif-parser');
+var Blob = require('blob');
 
 var app = express();
 
@@ -33,15 +34,40 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.get('/file', (req, res) => {
+    fs.readFile(path.resolve(req.query.path), (err, rawFileData) => {
+        var exifProperties = exifParser.create(rawFileData).parse();
+        res.send({
+            properties: exifProperties,
+            data: rawFileData
+        });
+    });
+});
+
 app.get('/fileData', (req, res) => {
     res.sendFile(path.resolve(req.query.path));
 });
 
 app.get('/fileProperties', (req, res) => {
-    fs.readFile(path.resolve(req.query.path), (err, rawFileData) => {
-        var exifProperties = exifParser.create(rawFileData).parse();
-        res.send(exifProperties);
-    });
+    var rstream = fs.createReadStream(path.resolve(req.query.path));
+    var dataLength = 0;
+    var fileArr = [];
+
+    rstream
+        .on('data', function (chunk) {
+            dataLength += chunk.length;
+            fileArr.push(chunk);
+
+            if (dataLength >= 65536) {
+                var exifProperties = exifParser.create(Buffer.concat(fileArr)).parse();
+                res.send(exifProperties);
+                rstream.destroy();
+            }
+        })
+        .on('end', function () {
+            var exifProperties = exifParser.create(Buffer.concat(fileArr)).parse();
+            res.send(exifProperties);
+        });
 });
 
 app.get('/fileName', (req, res) => {
