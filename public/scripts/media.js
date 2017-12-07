@@ -23,9 +23,9 @@ function getFormattedTime(timestamp) {
     date += "/" + (datetime.getMonth() + 1);
     date += "/" + datetime.getFullYear();
 
-    var time = datetime.getHours();
-    var minutes = datetime.getMinutes();
-    time += (minutes < 10 ? ":0" : ":") + datetime.getMinutes();
+    var time = datetime.getUTCHours();
+    var minutes = datetime.getUTCMinutes();
+    time += (minutes < 10 ? ":0" : ":") + minutes;
 
     return date + " " + time;
 }
