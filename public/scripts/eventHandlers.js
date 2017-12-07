@@ -1,16 +1,6 @@
 $(document).ready(function() {
-    populateDirContents("C:/Users/Tiyash Basu/Pictures/Sony-a68");
+    updateFileExplorerView("C:/Users/Tiyash Basu/Pictures/Sony-a68");
     document.getElementById("noFileLoadedMsgBox").style.display = "block";
-});
-
-$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange msfullscreenchange', function(e)
-{
-    if (fullScreen) {
-        fullScreen = false;
-    } else {
-        collapseFileExplorer();
-        fullScreen = true;
-    }
 });
 
 $('body').on('contextmenu', 'img', (e) => {
@@ -48,17 +38,20 @@ $("#dirContentsList").click((e) => {
     var clickedItemInnerHTML = e.target.innerHTML;
 
     if (clickedItemInnerHTML == ".." || clickedItemInnerHTML.indexOf('.') == -1) {
-        newFolderViewed = true;
+        newDirViewed = true;
 
-        updateDirName(clickedItemInnerHTML);
-        populateDirContents(document.getElementById('dirName').innerHTML);
+        updateCurrentDir(clickedItemInnerHTML);
+        updateFileExplorerView(currentDirName);
     } else {
-        backupFileExplorerView();
         newFileViewed = true;
 
         currentFileListItem = e.target; // required, not by mistake
-        showMedia(document.getElementById('dirName').innerHTML + "/" + clickedItemInnerHTML);
+        showMedia(currentDirName + "/" + clickedItemInnerHTML);
     }
+});
+
+$("#autoChangeFolder").change(() => {
+    autoChangeFolder = document.getElementById("autoChangeFolder").checked;
 });
 
 
@@ -75,11 +68,30 @@ swiper.on("swiperight", () => {
 });
 
 $('#nextMediaBtn').click(() => {
-    showNextMedia()
+    showNextMedia();
 });
 
 $('#prevMediaBtn').click(() => {
     showPrevMedia();
+});
+
+document.addEventListener('keydown', function(event) {
+    if(event.keyCode == 37) {
+        showPrevMedia();
+    }
+    else if(event.keyCode == 39) {
+        showNextMedia();
+    }
+});
+
+$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange msfullscreenchange', function(e)
+{
+    if (fullScreen) {
+        fullScreen = false;
+    } else {
+        collapseFileExplorer();
+        fullScreen = true;
+    }
 });
 
 $("#mediaFile").click((e) => { // display properties
@@ -106,20 +118,3 @@ $("#mediaFile").click((e) => { // display properties
 
     e.preventDefault();
 });
-
-
-// $("#mediaFile").click(() => { // display properties
-//     if ($("#filePropertiesContainer").css("width") == "0px") {
-//         $("#filePropertiesContainer").css("width", "100%");
-//     } else {
-//         $("#filePropertiesContainer").css("width", "0%");
-//     }
-// });
-
-// $("#mediaFile").dblclick(() => { // full screen
-//     if (fullScreen) {
-//         exitFullScreen();
-//     } else if (isFullscreenEnabled()) {
-//         requestFullscreen(document.getElementById("mediaContainer"));
-//     }
-// });

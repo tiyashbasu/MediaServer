@@ -4,23 +4,21 @@
     z-index: 3;
 
     width: 0%;
-    height: 100%;
+    height: 99.5%;
 
     background-color: rgb(250, 250, 250);
-
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
 }
 
 .dirNameStyle {
+    border-top: 1px solid grey;
     border-bottom: 1px solid grey;
     font-size: 1.5em;
     font-family: "Times New Roman", Times, serif;
+    font-weight: normal;
     cursor: pointer;
     overflow: hidden;
+    width: 100%;
+    height: 5%;
 }
 
 .dirContentsStyle {
@@ -28,6 +26,7 @@
     font-family: "Times New Roman", Times, serif;
     cursor: pointer;
     overflow-y: scroll;
+    height: 90%;
 }
 
 .dirContentsListStyle {
@@ -55,12 +54,6 @@
 
     font-size: 2em;
     font-family: "Times New Roman", Times, serif;
-
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
 }
 
 .toggleBtnTopLeftStyle {
@@ -87,12 +80,6 @@
     text-align: center;
     
     background: rgb(0, 0, 0);
-    
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
 }
 
 .msgBoxStyle {
@@ -140,11 +127,6 @@
     font-family: "Times New Roman", Times, serif;
 
     opacity: 0;
-    -moz-transition: all 0.3s ease-in-out;  /* FF4+ */
-    -o-transition: all 0.3s ease-in-out;  /* Opera 10.5+ */
-    -webkit-transition: all 0.3s ease-in-out;  /* Saf3.2+, Chrome */
-    -ms-transition: all 0.3s ease-in-out;  /* IE10? */
-    transition: all 0.3s ease-in-out; 
 }
 
 .arrowBtnContainer:hover {
@@ -181,21 +163,6 @@
     cursor: pointer;
 }
 
-.filePropertiesStyle{
-    position: absolute;
-    bottom: 0%;
-    right: 0%;
-    z-index: 3;
-
-    width: 0px;
-    
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-}
-
 .filePropertiesContainerStyle {
     position: absolute;
     bottom: 0%;
@@ -208,19 +175,12 @@
     background-color: rgba(250, 250, 250, 0);
 
     overflow: hidden;
-
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
 }
 
 .propertiesTableStyle {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
-    /* font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace; */
     font-family: "Times New Roman", Times, serif;
     text-align: center;
     color: black;
@@ -232,4 +192,12 @@
     height: auto;
     padding: 2 5 2 5;
     text-align: center;
+}
+
+.animate {
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }

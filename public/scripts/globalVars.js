@@ -15,9 +15,11 @@ var filePropertiesPrefix = "fileProperties?path=";
 var filePrefix = "file?path=";
 
 var currentFileListItem;
+var currentFileName;
+var currentDirName;
 
-var currentFolderName;
-var currentFileExplorerListItems = [];
+var dirNameBackup;
+var dirContentsBackup = [];
 
 var showHideBtnHeight = $("#toggleFileExplorer").css("height");
 var fsPaneExpandedHeight = "100%";
@@ -25,8 +27,9 @@ var fsPaneExpandedHeight = "100%";
 var fileCache = new Map();
 
 var newFileViewed = false;
-var newFolderViewed = false;
+var newDirViewed = false;
 var fullScreen = false;
+var autoChangeFolder = false;
 
 var isTappedOnce = false;
 var tapTimeout;

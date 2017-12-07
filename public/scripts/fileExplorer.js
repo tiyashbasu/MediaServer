@@ -1,73 +1,77 @@
 function expandFileExplorer() {
     $("#dirName").css("padding", "5 5 5 5");
+    $("#autoChangeFolderLabel").css("padding", "5 5 5 5");
     $("#fileExplorerContainer").css("width", "20%");
 
     $("#mediaContainer").css("width", "80%");
     $("#mediaContainer").css("left", "20%");
 
-    newFolderViewed = false;
+    newDirViewed = false;
 }
 
 function collapseFileExplorer() {
     $("#fileExplorerContainer").css("width", "0px");
     $("#dirName").css("padding", "0 0 0 0");
+    $("#autoChangeFolderLabel").css("padding", "0 0 0 0");
 
     $("#mediaContainer").css("width", "100%");
     $("#mediaContainer").css("left", "0%");
 
-    if (newFolderViewed && newFileViewed) {
+    if (newDirViewed && newFileViewed) {
         restoreFileExplorerView();
     }
 }
 
 function backupFileExplorerView() {
-    currentFolderName = document.getElementById('dirName').innerHTML;    
+    dirNameBackup = currentDirName;    
+    
     var items = document.getElementById('dirContentsList').childNodes;
 
-    currentFileExplorerListItems = [];
+    dirContentsBackup = [];
     
     for (var i = 0; i < items.length; i++) {
-        currentFileExplorerListItems.push(items[i]);
+        dirContentsBackup.push(items[i]);
     }
 
     // the following would be great, but doesn't work on PS4 browser
     // document.getElementById('dirContentsList').childNodes.forEach((item) => {
-    //     currentFileExplorerListItems.push(item);
+    //     dirContentsBackup.push(item);
     // });
 }
 
 function restoreFileExplorerView() {
-    document.getElementById('dirName').innerHTML = currentFolderName;
+    currentDirName = dirNameBackup;
+    document.getElementById('dirName').innerHTML = currentDirName.substring(currentDirName.lastIndexOf('/') + 1);
 
     $("#dirContentsList").empty();
 
     var contentsList = document.getElementById('dirContentsList');
 
-    currentFileExplorerListItems.forEach((item) => {
+    dirContentsBackup.forEach((item) => {
         contentsList.appendChild(item);
     });
 }
 
-function updateDirName(subFolderName) {
-    var folderName = document.getElementById('dirName').innerHTML;
+function updateCurrentDir(subFolderName) {
+    var newFolderName = currentDirName;
 
     if (subFolderName == "..") {
-        folderName = folderName.substring(0, folderName.lastIndexOf('/'));
+        newFolderName = newFolderName.substring(0, newFolderName.lastIndexOf('/'));
     } else {
-        folderName += '/' + subFolderName;
+        newFolderName += '/' + subFolderName;
     }
 
-    document.getElementById('dirName').innerHTML = folderName;
+    currentDirName = newFolderName;
 }
 
-function populateDirContents(folderName) {
+function updateFileExplorerView(folderName, showFirst = false) {
     document.getElementById("noFileLoadedMsgBox").style.display = 'none';
 
     var uri = dirPrefix + folderName + "&filter=" + filter.image;
 
     getUri(uri, (response) => {
-        document.getElementById("dirName").innerHTML = folderName;
-        $("#dirContents").css("height", "calc(100% - " + $("#dirName").css("height") + ")");
+        document.getElementById("dirName").innerHTML = folderName.substring(folderName.lastIndexOf('/') + 1);
+        currentDirName = folderName;
 
         var incomingContents = JSON.parse(response).contents;
 
@@ -86,5 +90,10 @@ function populateDirContents(folderName) {
             listItem.className = "dirContentsListItemStyle";
             contentsList.appendChild(listItem);
         });
+
+        if (showFirst) {
+            currentFileListItem = document.getElementById('dirContentsList').firstChild;
+            showNextMedia();
+        }
     });
 }

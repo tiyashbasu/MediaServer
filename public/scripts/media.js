@@ -15,6 +15,21 @@ function getMediaEXIFProperties(fileName, callback) {
     }
 }
 
+function getFormattedTime(timestamp) {
+    var datetime = new Date(0);
+    datetime.setUTCSeconds(timestamp);
+
+    var date = datetime.getDate();
+    date += "/" + (datetime.getMonth() + 1);
+    date += "/" + datetime.getFullYear();
+
+    var time = datetime.getHours();
+    var minutes = datetime.getMinutes();
+    time += (minutes < 10 ? ":0" : ":") + datetime.getMinutes();
+
+    return date + " " + time;
+}
+
 function showMedia(fileName) {
     clearCurrentMedia();
 
@@ -26,6 +41,8 @@ function showMedia(fileName) {
     var fileCacheMapItem = fileCache.get(fileName);
 
     if (fileCacheMapItem) {
+        document.getElementById("datetime").innerHTML = getFormattedTime(fileCacheMapItem.properties.tags.DateTimeOriginal);
+
         switch (mimeType) {
         case "image":
             showImage(fileCacheMapItem.media, fileCacheMapItem.properties);
@@ -33,6 +50,8 @@ function showMedia(fileName) {
         }
     } else {
         getMediaEXIFProperties(fileName, (exifProperties) => {
+            document.getElementById("datetime").innerHTML = getFormattedTime(exifProperties.tags.DateTimeOriginal);
+
             switch (mimeType) {
             case "image":
                 var image = new Image();
@@ -51,6 +70,8 @@ function showMedia(fileName) {
             }
         });
     }
+
+    backupFileExplorerView();
 }
 
 function setMediaDisplayDimensions(imageAR) {
@@ -145,15 +166,56 @@ function showLastMediaMessage() {
     $("#lastFileMsgBox").delay(500).fadeOut(2000);
 }
 
+function changeFolder(moveToNextFolder, fallback) {
+    var currentDirBaseName = dirNameBackup.substring(dirNameBackup.lastIndexOf('/') + 1);
+    
+    var uri = dirPrefix + dirNameBackup + "/.." + "&filter=" + filter.image;
+
+    getUri(uri, (response) => {
+        var incomingContents = JSON.parse(response).contents;
+        
+        var nextDirName = null;
+
+        if (moveToNextFolder) {
+            var found = false;
+
+            for (var i = 0; i < incomingContents.length; i++) {
+                if (found) {
+                    nextDirName = incomingContents[i];
+                    break;
+                }
+                found = incomingContents[i] == currentDirBaseName;
+            }
+        } else {
+            for (var i = 1; i < incomingContents.length; i++) {
+                if(incomingContents[i] == currentDirBaseName) {
+                    nextDirName = incomingContents[i - 1];
+                    break;
+                }
+            }
+        }
+
+        if (nextDirName) {
+            updateFileExplorerView(dirNameBackup.substring(0, dirNameBackup.lastIndexOf('/') + 1) + nextDirName, true);
+        } else {
+            fallback();
+        }
+    });
+}
+
 function showNextMedia() {
     if (!currentFileListItem) {
         return;
     }
 
     if (currentFileListItem.nextSibling == null) {
-        showLastMediaMessage();
+        if (autoChangeFolder) {
+            changeFolder(true, showLastMediaMessage);
+        } else {
+            showLastMediaMessage();
+        }
     } else {
-        var fileName = document.getElementById('dirName').innerHTML + "/" + currentFileListItem.nextSibling.innerHTML;
+        var fileName = currentDirName + "/" + currentFileListItem.nextSibling.innerHTML;
         currentFileListItem = currentFileListItem.nextSibling;
         showMedia(fileName);
     }
@@ -165,9 +227,13 @@ function showPrevMedia() {
     }
 
     if (currentFileListItem.previousSibling.innerHTML == "..") {
-        showFirstMediaMessage();
+        if (autoChangeFolder) {
+            changeFolder(false, showFirstMediaMessage);
+        } else {
+            showFirstMediaMessage();
+        }
     } else {
-        var fileName = document.getElementById('dirName').innerHTML + "/" + currentFileListItem.previousSibling.innerHTML;
+        var fileName = currentDirName + "/" + currentFileListItem.previousSibling.innerHTML;
         currentFileListItem = currentFileListItem.previousSibling;
         showMedia(fileName);
     }
