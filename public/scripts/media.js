@@ -74,6 +74,21 @@ function showMedia(fileName) {
     backupFileExplorerView();
 }
 
+function showFirstMedia() {
+    currentFileListItem = document.getElementById('dirContentsList').firstChild;
+    showNextMedia();
+}
+
+function showLastMedia() {
+    currentFileListItem = document.getElementById('dirContentsList').lastChild;
+
+    if (currentFileListItem.innerHTML == "..") {
+        showPrevMedia();
+    } else {
+        showMedia(currentDirName + "/" + currentFileListItem.innerHTML);
+    }
+}
+
 function setMediaDisplayDimensions(imageAR) {
     var screenWidth = document.getElementById("mediaContainer").clientWidth;
     var screenHeight = document.getElementById("mediaContainer").clientHeight;
@@ -166,43 +181,6 @@ function showLastMediaMessage() {
     $("#lastFileMsgBox").delay(500).fadeOut(2000);
 }
 
-function changeFolder(moveToNextFolder, fallback) {
-    var currentDirBaseName = dirNameBackup.substring(dirNameBackup.lastIndexOf('/') + 1);
-    
-    var uri = dirPrefix + dirNameBackup + "/.." + "&filter=" + filter.image;
-
-    getUri(uri, (response) => {
-        var incomingContents = JSON.parse(response).contents;
-        
-        var nextDirName = null;
-
-        if (moveToNextFolder) {
-            var found = false;
-
-            for (var i = 0; i < incomingContents.length; i++) {
-                if (found) {
-                    nextDirName = incomingContents[i];
-                    break;
-                }
-                found = incomingContents[i] == currentDirBaseName;
-            }
-        } else {
-            for (var i = 1; i < incomingContents.length; i++) {
-                if(incomingContents[i] == currentDirBaseName) {
-                    nextDirName = incomingContents[i - 1];
-                    break;
-                }
-            }
-        }
-
-        if (nextDirName) {
-            updateFileExplorerView(dirNameBackup.substring(0, dirNameBackup.lastIndexOf('/') + 1) + nextDirName, true);
-        } else {
-            fallback();
-        }
-    });
-}
-
 function showNextMedia() {
     if (!currentFileListItem) {
         return;
@@ -210,7 +188,7 @@ function showNextMedia() {
 
     if (currentFileListItem.nextSibling == null) {
         if (autoChangeFolder) {
-            changeFolder(true, showLastMediaMessage);
+            moveToAdjacentDir(currentDirName, true, showFirstMedia, showLastMediaMessage);
         } else {
             showLastMediaMessage();
         }
@@ -226,9 +204,9 @@ function showPrevMedia() {
         return;
     }
 
-    if (currentFileListItem.previousSibling.innerHTML == "..") {
+    if (currentFileListItem.innerHTML == ".." || currentFileListItem.previousSibling.innerHTML == "..") {
         if (autoChangeFolder) {
-            changeFolder(false, showFirstMediaMessage);
+            moveToAdjacentDir(currentDirName, false, showLastMedia, showFirstMediaMessage);
         } else {
             showFirstMediaMessage();
         }

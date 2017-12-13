@@ -1,0 +1,1 @@
+/usr/bin/clang++  -g   CMakeFiles/codility.dir/main.cpp.o  -o codility 

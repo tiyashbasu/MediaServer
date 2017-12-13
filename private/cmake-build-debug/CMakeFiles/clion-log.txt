@@ -1,0 +1,4 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++ -G "CodeBlocks - Unix Makefiles" /home/tbasu/Dev/codility
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/tbasu/Dev/codility/cmake-build-debug

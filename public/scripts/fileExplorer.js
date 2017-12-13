@@ -64,7 +64,7 @@ function updateCurrentDir(subFolderName) {
     currentDirName = newFolderName;
 }
 
-function updateFileExplorerView(folderName, showFirst = false) {
+function updateFileExplorerView(folderName, action) {
     document.getElementById("noFileLoadedMsgBox").style.display = 'none';
 
     var uri = dirPrefix + folderName + "&filter=" + filter.image;
@@ -91,9 +91,45 @@ function updateFileExplorerView(folderName, showFirst = false) {
             contentsList.appendChild(listItem);
         });
 
-        if (showFirst) {
-            currentFileListItem = document.getElementById('dirContentsList').firstChild;
-            showNextMedia();
+        if (action) {
+            action();
+        }
+    });
+}
+
+function moveToAdjacentDir(currentDir, moveToNextFolder, action, fallback) {
+    var currentDirBaseName = currentDir.substring(currentDirName.lastIndexOf('/') + 1);
+    
+    var uri = dirPrefix + currentDir + "/.." + "&filter=" + filter.image;
+
+    getUri(uri, (response) => {
+        var incomingContents = JSON.parse(response).contents;
+        
+        var nextDirName = null;
+
+        if (moveToNextFolder) {
+            var found = false;
+
+            for (var i = 0; i < incomingContents.length; i++) {
+                if (found) {
+                    nextDirName = incomingContents[i];
+                    break;
+                }
+                found = incomingContents[i] == currentDirBaseName;
+            }
+        } else {
+            for (var i = 1; i < incomingContents.length; i++) {
+                if(incomingContents[i] == currentDirBaseName) {
+                    nextDirName = incomingContents[i - 1];
+                    break;
+                }
+            }
+        }
+
+        if (nextDirName) {
+            updateFileExplorerView(dirNameBackup.substring(0, dirNameBackup.lastIndexOf('/') + 1) + nextDirName, action);
+        } else {
+            fallback();
         }
     });
 }
