@@ -1,3 +1,0 @@
-/home/tbasu/Dev/codility/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/tbasu/Dev/codility/cmake-build-debug/CMakeFiles/codility.dir
-/home/tbasu/Dev/codility/cmake-build-debug/CMakeFiles/edit_cache.dir
